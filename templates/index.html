@@ -1,0 +1,11 @@
+<h1>Saboteur Rock</h1>
+
+<h2>Please input your name:</h2>
+<body>
+  <form action="{{ url_for("add_guest") }}" method="post">
+    <label for="fname">First name:</label>
+    <br>
+    <input type="text" id="fname" name="fname">
+    <input type="submit" value="Submit">
+  </form>
+</body>
