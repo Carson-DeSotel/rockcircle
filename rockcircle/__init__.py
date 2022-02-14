@@ -1,13 +1,16 @@
-from flask import (Flask, render_template)
+from flask import Flask
+from flask_socketio import SocketIO
 
-def create_app():
-  app = Flask(__name__)
+from config import Config
 
-  @app.route('/')
-  def index():
-    return 'Hello World!'
+### needs to be initialized before importing views
+async_mode = None
+app = Flask(__name__)
+app.config.from_object(Config)
 
-  return app
+socketio = SocketIO(app, async_mode=async_mode)
+
+from rockcircle import views, handles
 
 if __name__ == '__main__':
-  app.run()
+    sio.run(app)

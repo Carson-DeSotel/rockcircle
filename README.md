@@ -50,3 +50,5 @@ gunicorn --bind localhost:42069 rockcircle.wsgi:app
 [4] https://github.com/pallets/flask/tree/2.0.2/examples/tutorial  
 [5] https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-18-04  
 [6] https://www.python-boilerplate.com/py3+flask+gitignore+logging+unittest  
+[7] https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
+[8] https://github.com/miguelgrinberg/Flask-SocketIO/blob/main/example/app.py  
