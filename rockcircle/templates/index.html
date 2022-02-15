@@ -15,6 +15,20 @@
                     socket.emit('handle_login', {data: $('#fname').val()});
                     return false;
                 });
+
+                $('form#timer-start').submit(function(event) {
+                    socket.emit('handle_timer_start');
+                    return false;
+                });
+
+                $('form#timer-stop').submit(function(event) {
+                    socket.emit('handle_timer_stop');
+                    return false;
+                });
+
+                socket.on('timer_response', function(msg) {
+                    $('#timer').text(msg.seconds).html();
+                 });
             });
         </script>
     </head>
@@ -29,6 +43,17 @@
             <br>
             <input type="text" id="fname" name="fname">
             <input type="submit" value="Submit">
+        </form>
+
+        <h2>Timer:</h2>
+        <br>
+        <div id="timer"></div>
+        <br>
+        <form id="timer-start" method="POST" action="#">
+            <input type="submit" value="Start">
+        </form>
+        <form id="timer-stop" method="POST" action="#">
+            <input type="submit" value="Stop">
         </form>
     </body>
 </html>
