@@ -2,58 +2,8 @@
 <html>
     <head>
         <title> {{ title }} </title>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
-        <script type="text/javascript" charset="utf-8">
-            $(document).ready(function() { 
-                var socket = io();
-                socket.on('connect', function() {
-                    socket.emit('my event', {data: 'I\'m connected!'});
-                });
-
-                $('form#login').submit(function(event) {
-                    socket.emit('handle_login', {data: $('#fname').val()});
-                    return false;
-                });
-
-                $('form#timer-start').submit(function(event) {
-                    socket.emit('handle_timer_start');
-                    return false;
-                });
-
-                $('form#timer-stop').submit(function(event) {
-                    socket.emit('handle_timer_stop');
-                    return false;
-                });
-
-                socket.on('timer_response', function(msg) {
-                    $('#timer').text(msg.seconds).html();
-                 });
-            });
-        </script>
     </head>
     <body>
-        {% for user in users %}
-        <p>Hello, {{ user.username }}</p>
-        {% endfor %}
-
-        <h2>Please input your name:</h2>
-        <form id="login" method="POST" action="#">
-            <label for="fname">First name:</label>
-            <br>
-            <input type="text" id="fname" name="fname">
-            <input type="submit" value="Submit">
-        </form>
-
-        <h2>Timer:</h2>
-        <br>
-        <div id="timer"></div>
-        <br>
-        <form id="timer-start" method="POST" action="#">
-            <input type="submit" value="Start">
-        </form>
-        <form id="timer-stop" method="POST" action="#">
-            <input type="submit" value="Stop">
-        </form>
+        <p> this page is under construction...</p>
     </body>
 </html>

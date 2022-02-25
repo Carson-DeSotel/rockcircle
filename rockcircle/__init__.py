@@ -1,5 +1,3 @@
-from threading import Lock
-
 from flask import Flask
 from flask_socketio import SocketIO
 
@@ -12,10 +10,4 @@ app.config.from_object(Config)
 
 socketio = SocketIO(app, async_mode=async_mode)
 
-thread = None
-thread_lock = Lock()
-
-from rockcircle import views, handles, timer
-
-if __name__ == '__main__':
-    sio.run(app)
+from rockcircle import views, handles
