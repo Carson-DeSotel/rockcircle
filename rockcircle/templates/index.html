@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title> {{ title }} </title>
+        <title> Saboteur Rock </title>
     </head>
     <body>
+        <h1>Please Insert Your Name & Role</h1>
         <form action="/" method="POST">
-            <p>See Roles: <input type="submit" name="to_roles" value="See Roles" /> </p>
+            <p>Name: <input type="text" id="pname" name="pname"> </p>
+            <p>Role: <input type="text" id="prole" name="prole"> </p>
+            <input type="submit" name="add_player">
         </form>
     </body>
 </html>

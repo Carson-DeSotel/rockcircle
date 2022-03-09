@@ -49,6 +49,8 @@ def query_db(query, args=(), one=False):
   # execute query, store rows in rv
   cur = con.cursor()
   cur.execute(query, args)
+  # commit executed query to db in case of INSERT
+  con.commit()
   rv = cur.fetchall()
 
   cur.close()

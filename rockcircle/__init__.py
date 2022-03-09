@@ -8,7 +8,7 @@ from config import Config
 app.config.from_object(Config)
 
 # import after creating app
-from rockcircle import views, db
+from rockcircle import views, db, game
 
 # initialize the database
 db.init_db()

@@ -4,21 +4,21 @@
     <title>Player Roles</title>
   </head>
   <body>
-    <form action="/" method="POST">
-      <p>Index: <input type="submit" name="to_index"/> </p>
+    <form action="/admin" method="POST">
+      <p>Admin: <input type="submit" name="to_admin"/> </p>
     </form>
     <h1> Player Roles:</h1>
     <table>
       <tr>
         <th>PROLE</th>
         <th>PNAME</th>
-      </tr>
-      
-      <!-- insert Jinja2 templating to read data from SQL -->
-      
+      </tr>  
+         
       {% for row in rows %}
-      <td> {{ row.prole }} </td>
-      <td> {{ row.pname }} </td>
+      <tr>
+        <td> {{ row.prole }} </td>
+        <td> {{ row.pname }} </td>
+      </tr>
       {% endfor %}
 
     </table>
