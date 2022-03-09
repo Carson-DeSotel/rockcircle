@@ -1,13 +1,14 @@
 from flask import Flask
-from flask_socketio import SocketIO
 
-from config import Config
-
-### needs to be initialized before importing views
-async_mode = None
+# needs to be initialized before importing views
 app = Flask(__name__)
+
+# establish config from config file
+from config import Config
 app.config.from_object(Config)
 
-socketio = SocketIO(app, async_mode=async_mode)
+# import after creating app
+from rockcircle import views, db
 
-from rockcircle import views, handles
+# initialize the database
+db.init_db()
