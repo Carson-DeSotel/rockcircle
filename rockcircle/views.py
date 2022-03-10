@@ -8,8 +8,8 @@ from rockcircle.game import add_player
 def index():
   if request.method == 'POST':
     if request.form['add_player']:
-      pname = request.form.get('pname')
-      prole = request.form.get('prole')
+      pname = request.form.get('pname').upper()
+      prole = request.form.get('prole').upper()
       add_player(pname, prole)
   return render_template('index.html')
 
@@ -18,7 +18,6 @@ def admin():
   if 'to_roles' in request.form:
     # get role data from database
     rows = query_db('SELECT * FROM Roles')
-    print(rows)
     # render role data in roles.html
     return render_template('roles.html', rows = rows)
 
