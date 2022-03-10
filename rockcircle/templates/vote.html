@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Voting</title>
+  </head>
+  <body>
+    <h1>Select Your Vote:</h1>
+    <form action="/" method="POST">
+      {% for row in rows %}
+      <input type="radio" name="name" value={{ row.pname }}>
+      <label for={{ row.pname }}> {{ row.pname }} </label>
+      <br>
+      {% endfor %}
+      <input type="submit" name="action" value="Cast Vote">
+    </form> 
+  </body>
+</html>
