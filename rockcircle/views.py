@@ -17,7 +17,8 @@ def index():
       # get name & role from text fields, remove whitespace, send to UPPERCASE
       pname = request.form.get('pname').strip().upper()
       prole = request.form.get('prole').strip().upper()
-
+      
+      app.logger.info('Adding Player: ' + pname + ' ' + prole)
       # add name & role to database
       add_player(pname, prole)
 
@@ -34,13 +35,7 @@ def index():
       mvote = request.form.get('mvote', NO_SUBMISSION)
 
       # log each vote submitted
-      print('=' * 10, '\n', pname, '\'s Vote\n', '=' * 10, sep = '')
-      print('pname:\t', pname)
-      print('pvote:\t', pvote)
-      print('cvote:\t', cvote)
-      print('mvote:\t', mvote)
-      print('=' * 10, sep = '')
-
+      app.logger.info('Vote Submitted: ' + ' '.join((pname, pvote, cvote, mvote)))
       cast_vote(pname, pvote, cvote, mvote)
 
   return render_template('index.html')
