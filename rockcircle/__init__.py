@@ -10,5 +10,5 @@ app.config.from_object(Config)
 # import after creating app
 from rockcircle import views, db, game
 
-# initialize the database
+# initialize the database each time the app is ran
 db.init_db()
