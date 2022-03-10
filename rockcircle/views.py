@@ -2,7 +2,7 @@ from flask import g, render_template, request, redirect, url_for
 
 from rockcircle import app
 from rockcircle.db import get_db, query_db
-from rockcircle.game import add_player, drop_player
+from rockcircle.game import add_player, cast_vote, NO_SUBMISSION
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -14,9 +14,9 @@ def index():
   if request.method == 'POST':
     # identify which submit was pressed based on HTML button value attr.
     if request.form['action'] == 'Add Player':
-      # get name & role from text fields, send to UPPERCASE
-      pname = request.form.get('pname').upper()
-      prole = request.form.get('prole').upper()
+      # get name & role from text fields, remove whitespace, send to UPPERCASE
+      pname = request.form.get('pname').strip().upper()
+      prole = request.form.get('prole').strip().upper()
 
       # add name & role to database
       add_player(pname, prole)
@@ -28,9 +28,20 @@ def index():
       
     elif request.form['action'] == 'Cast Vote':
       # read name from radio buttons
-      pname = request.form['name']
-      print('VOTED OFF:', pname)
-      drop_player(pname)
+      pname = request.form.get('pname')
+      pvote = request.form.get('pvote')
+      cvote = request.form.get('cvote', NO_SUBMISSION)
+      mvote = request.form.get('mvote', NO_SUBMISSION)
+
+      # log each vote submitted
+      print('=' * 10, '\n', pname, '\'s Vote\n', '=' * 10, sep = '')
+      print('pname:\t', pname)
+      print('pvote:\t', pvote)
+      print('cvote:\t', cvote)
+      print('mvote:\t', mvote)
+      print('=' * 10, sep = '')
+
+      cast_vote(pname, pvote, cvote, mvote)
 
   return render_template('index.html')
 
@@ -39,15 +50,23 @@ def admin():
   """
   handle some admin features for debug purposes
   """
-  if request.form['action'] == 'To Roles':
+  if request.form.get('action') == 'To Roles':
     # get role data from database
     rows = query_db('SELECT * FROM Roles')
-    # render role data in roles.html
-    return render_template('roles.html', rows = rows)
+    # render role data in db_roles.html
+    return render_template('db_roles.html', rows = rows)
 
-  elif request.form['action'] == 'To Admin':
+  elif request.form.get('action') == 'To Votes':
+    # get vote data from database
+    rows = query_db('SELECT * FROM Votes')
+    # render vote data in db_votes.html
+    return render_template('db_votes.html', rows = rows)
+
+  elif request.form.get('action') == 'To Admin':
     return render_template('admin.html')
-  return render_template('admin.html')
+
+  else:
+    return render_template('admin.html')
 
 @app.teardown_appcontext
 def close_connection(exception):

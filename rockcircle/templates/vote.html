@@ -4,13 +4,50 @@
     <title>Voting</title>
   </head>
   <body>
-    <h1>Select Your Vote:</h1>
+    <h1>Cast Your Vote:</h1>
     <form action="/" method="POST">
+      <!-- Handle Player Name -->
+      <h2>Who are You?</h2>
+      <h3>Required</h3>
       {% for row in rows %}
-      <input type="radio" name="name" value={{ row.pname }}>
-      <label for={{ row.pname }}> {{ row.pname }} </label>
+      <label>
+        <input type="radio" name="pname" value={{ row.pname }} required>
+        {{ row.pname }}
+      </label>
       <br>
       {% endfor %}
+
+      <!-- Handle Regular Vote -->
+      <h2>Select the Person You're Voting Off:</h2>
+      <h3>Required</h3>
+      {% for row in rows %}
+      <label>
+        <input type="radio" name="pvote" value={{ row.pname }} required>
+        {{ row.pname }}
+      </label>
+      <br>
+      {% endfor %}
+
+      <!-- Handle Captain Vote -->
+      <h2>If You're the Captain, Select Your Second Vote:</h2>
+      {% for row in rows %}
+      <label>
+        <input type="radio" name="cvote" value={{ row.pname }}>
+        {{ row.pname }}
+      </label>
+      <br>
+      {% endfor %}
+
+      <!-- Handle Medic Vote -->
+      <h2>If You're the Medic, Select the Player to Save</h2>
+      {% for row in rows %}
+      <label>
+        <input type="radio" name="mvote" value={{ row.pname }}>
+        {{ row.pname }}
+      </label>
+      <br>
+      {% endfor %}
+
       <input type="submit" name="action" value="Cast Vote">
     </form> 
   </body>
