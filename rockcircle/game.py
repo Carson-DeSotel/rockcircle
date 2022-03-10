@@ -1,3 +1,4 @@
+from rockcircle import app
 from rockcircle.db import query_db
 
 NO_SUBMISSION = 'n/a'
@@ -21,26 +22,22 @@ def cast_vote(pname, pvote, cvote, mvote):
   
   if cvote != NO_SUBMISSION:
     # validate that player is the captain
-    cname = query_db('SELECT pname FROM Roles WHERE prole = "CAPTAIN"', one=True)['pname']
+    res = query_db('SELECT pname FROM Roles WHERE prole = "CAPTAIN"', one=True)
+    cname = res['pname'] if res != None else ''
     if pname != cname:
-      print('pname:', pname)
-      print('cname:', cname)
-      print('captain vote & player name did not match, vote not counted.')
+      app.logger.info('captain vote & player name did not match, vote not counted.')
       return
 
   if mvote != NO_SUBMISSION:
     # validate that player is the medic
-    mname = query_db('SELECT pname FROM Roles WHERE prole = "MEDIC"', one=True)['pname']
+    res = query_db('SELECT pname FROM Roles WHERE prole = "MEDIC"', one=True)
+    mname = res['pname'] if res != None else ''
     if pname != mname:
-      print('pname:', pname)
-      print('mname:', mname)
-      print('medic vote & player name did not match, vote not counted.')
+      app.logger.info('medic vote & player name did not match, vote not counted.')
       return
   
   # insert vote into Votes table
-  query_db('INSERT INTO Votes VALUES (?, ?, ?, ?, ?)', (ROUND, pname, pvote, cvote, mvote))
-  print('Vote Added')
-  
+  query_db('INSERT INTO Votes VALUES (?, ?, ?, ?, ?)', (ROUND, pname, pvote, cvote, mvote))  
 
 
 def drop_player(pname):
