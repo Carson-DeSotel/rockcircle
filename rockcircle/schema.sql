@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS Roles;
 CREATE TABLE Roles (
   prole VARCHAR(25),
   pname VARCHAR(25),
-  PRIMARY KEY (prole)
+  PRIMARY KEY (prole, pname)
 );
 
 
