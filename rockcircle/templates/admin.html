@@ -8,6 +8,18 @@
       <p>See Roles: <input type="submit" name="action" value="To Roles" /> </p>
       <p>See Votes: <input type="submit" name="action" value="To Votes" /> </p>
     </form>
+
+    <h1>Information:</h1>
+    <h2>Number of Players: {{ num_players }}</h2>
+    <h2>Current Round: {{ cur_round }} </h2>
+    <h2>Submitted Players:</h2>
+    <table>
+      {% for player in sub_players %}
+      <tr>
+        <td>{{ player }}</td>
+      </tr>
+      {% endfor %}
+    </table>
   </body>
 
 </html>

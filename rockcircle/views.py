@@ -2,7 +2,10 @@ from flask import g, render_template, request, redirect, url_for
 
 from rockcircle import app
 from rockcircle.db import get_db, query_db
-from rockcircle.game import add_player, cast_vote, NO_SUBMISSION
+from rockcircle.game import (add_player, cast_vote, 
+                             get_num_players, NO_SUBMISSION,
+                             get_current_round,
+                             get_submitted_players)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -45,6 +48,11 @@ def admin():
   """
   handle some admin features for debug purposes
   """
+
+  num_players = get_num_players()
+  cur_round   = get_current_round()
+  sub_players = get_submitted_players()
+
   if request.form.get('action') == 'To Roles':
     # get role data from database
     rows = query_db('SELECT * FROM Roles')
@@ -58,11 +66,14 @@ def admin():
     return render_template('db_votes.html', rows = rows)
 
   elif request.form.get('action') == 'To Admin':
-    return render_template('admin.html')
+    return render_template('admin.html', num_players = num_players,
+                                         cur_round   = cur_round,
+                                         sub_players = sub_players)
 
   else:
-    return render_template('admin.html')
-
+    return render_template('admin.html', num_players = num_players,
+                                         cur_round   = cur_round,
+                                         sub_players = sub_players)
 @app.teardown_appcontext
 def close_connection(exception):
   """
