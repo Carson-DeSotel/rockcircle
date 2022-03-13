@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Results</title>
+  </head>
+  <body>
+    <form action="/" method="POST">
+      <p>Index: <input type="submit" name="action" value="To Index"/> </p>
+    </form>
+    <h1>Results:</h1>
+    <table>
+      <tr>
+        <th>NAME</th>
+        <th>COUNT</th>
+      </tr>
+      {% for result in results %}
+      <tr>
+        <td>{{ result["name"] }}</td>
+        <td>{{ result["count"] }}</td>
+      </tr>
+      {% endfor %}
+    </table> 
+  </body>
+</html>

@@ -5,7 +5,6 @@ CREATE TABLE Roles (
   PRIMARY KEY (prole, pname)
 );
 
-
 DROP TABLE IF EXISTS Votes;
 CREATE TABLE Votes (
   round INTEGER,

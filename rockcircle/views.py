@@ -5,7 +5,8 @@ from rockcircle.db import get_db, query_db
 from rockcircle.game import (add_player, cast_vote, 
                              get_num_players, NO_SUBMISSION,
                              get_current_round,
-                             get_submitted_players)
+                             get_submitted_players,
+                             get_results)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -16,7 +17,7 @@ def index():
   # read POST request from form data
   if request.method == 'POST':
     # identify which submit was pressed based on HTML button value attr.
-    if request.form['action'] == 'Add Player':
+    if request.form.get('action') == 'Add Player':
       # get name & role from text fields, remove whitespace, send to UPPERCASE
       pname = request.form.get('pname').strip().upper()
       prole = request.form.get('prole').strip().upper()
@@ -25,12 +26,12 @@ def index():
       # add name & role to database
       add_player(pname, prole)
 
-    elif request.form['action'] == 'To Vote':
+    elif request.form.get('action') == 'To Vote':
       # get all names and pass them into votes
       rows = query_db('SELECT pname FROM Roles')
       return render_template('vote.html', rows = rows)
       
-    elif request.form['action'] == 'Cast Vote':
+    elif request.form.get('action') == 'Cast Vote':
       # read name from radio buttons
       pname = request.form.get('pname')
       pvote = request.form.get('pvote')
@@ -40,6 +41,14 @@ def index():
       # log each vote submitted
       app.logger.info('Vote Submitted: ' + ' '.join((pname, pvote, cvote, mvote)))
       cast_vote(pname, pvote, cvote, mvote)
+
+    elif request.form.get('action') == 'To Results':
+      cur_round = get_current_round()
+      results = get_results(cur_round)
+      return render_template('results.html', results = results)
+
+    elif request.form.get('action') == 'To Index':
+      return render_template('index.html')
 
   return render_template('index.html')
 
@@ -52,6 +61,7 @@ def admin():
   num_players = get_num_players()
   cur_round   = get_current_round()
   sub_players = get_submitted_players()
+  results = get_results(cur_round)
 
   if request.form.get('action') == 'To Roles':
     # get role data from database
@@ -68,12 +78,12 @@ def admin():
   elif request.form.get('action') == 'To Admin':
     return render_template('admin.html', num_players = num_players,
                                          cur_round   = cur_round,
-                                         sub_players = sub_players)
+                                         sub_players = sub_players,)
 
   else:
     return render_template('admin.html', num_players = num_players,
                                          cur_round   = cur_round,
-                                         sub_players = sub_players)
+                                         sub_players = sub_players,)
 @app.teardown_appcontext
 def close_connection(exception):
   """

@@ -78,8 +78,8 @@ def get_current_round():
   num_players = get_num_players()
   sub_players = get_submitted_players()
 
-  if(num_players == sub_players):
-    # if all players have submitted, then the current round is the "next" round1
+  if(num_players == len(sub_players)):
+    # if all players have submitted, then the current round is the "next" round
     return max_round + 1
   else:
     return max_round
@@ -110,3 +110,26 @@ def get_vote(pname, round):
   res = query_db('SELECT pvote FROM Votes WHERE pname = ? AND round = ?', (pname, round), one=True)
   res = res[0] if res != None else None
   return res
+
+def get_results(round):
+  """
+  get the names & how many votes they received for a given round
+  """
+  cur_round = get_current_round()
+
+  if round > cur_round:
+    return None 
+
+  res = query_db('SELECT pvote, COUNT(*) FROM Votes GROUP BY pvote')
+  
+  # unpack to dict to avoid indexing errors
+  res = [dict(r) for r in res]
+
+  # rename fields
+  final = []
+  for d in res:
+    renamed_dict = {}
+    renamed_dict['name'] = d['pvote']
+    renamed_dict['count'] = d['COUNT(*)']
+    final.append(renamed_dict)
+  return final
