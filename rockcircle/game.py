@@ -57,7 +57,7 @@ def drop_player(pname):
 
 def get_num_players():
   """
-  get the total number of players left in the Roles table
+  get the total number of players left
   """
   return query_db('SELECT COUNT(pname) FROM Players', one=True)[0]
 
@@ -120,7 +120,7 @@ def get_results(round):
   if round > cur_round:
     return None 
 
-  res = query_db('SELECT pvote, COUNT(*) FROM Votes GROUP BY pvote')
+  res = query_db('SELECT pvote, COUNT(*) FROM Votes GROUP BY pvote, cvote')
   
   # unpack to dict to avoid indexing errors
   res = [dict(r) for r in res]

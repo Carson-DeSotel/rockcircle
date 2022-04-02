@@ -17,10 +17,14 @@ def index():
   # read POST request from form data
   if request.method == 'POST':
     # identify which submit was pressed based on HTML button value attr.
-    if request.form.get('action') == 'Add Player':
+    if request.form.get('action') == 'To Player':
+      rows = query_db('SELECT rname from Roles')
+      return render_template('add_player.html', rows = rows)
+      
+    elif request.form.get('action') == 'Add Player':
       # get name & role from text fields, remove whitespace, send to UPPERCASE
       pname = request.form.get('pname').strip().upper()
-      prole = request.form.get('prole').strip().upper()
+      prole = request.form.get('rname').strip().upper()
       
       app.logger.info('Adding Player: ' + pname + ' ' + prole)
       # add name & role to database

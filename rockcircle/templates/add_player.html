@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Add Player</title>
+  </head>
+  <body>
+    <form action="/" method="POST">
+      <p>Index: <input type="submit" name="action" value="To Index"/> </p>
+    </form>
+    <h1>Please Submit Your Name & Role</h1>
+    <form action="/" method="POST">
+        <p>Name: <input type="text" id="pname" name="pname" required> </p>
+        <h3>Required</h3>
+        {% for row in rows %}
+        <label>
+          <input type="radio" name="rname" value={{ row.rname }} required>
+          {{ row.rname }}
+        </label>
+        <br>
+        {% endfor %}        <input type="submit" name="action" value="Add Player">
+    </form>
+  </body>
+</html>
