@@ -9,7 +9,7 @@ def add_player(pname, prole):
   :param pname: player name
   :param prole: player role
   """
-  query_db('INSERT INTO Roles (prole, pname) VALUES (?, ?)', (prole, pname))
+  query_db('INSERT INTO Players (prole, pname) VALUES (?, ?)', (prole, pname))
 
 
 def cast_vote(pname, pvote, cvote, mvote):
@@ -28,7 +28,7 @@ def cast_vote(pname, pvote, cvote, mvote):
   
   # validate that player is the captain if they submitted a captain vote
   if cvote != NO_SUBMISSION:
-    res = query_db('SELECT pname FROM Roles WHERE prole = "CAPTAIN"', one=True)
+    res = query_db('SELECT pname FROM Players WHERE prole = "CAPTAIN"', one=True)
     cname = res['pname'] if res != None else ''
     if pname != cname:
       app.logger.info('captain vote & player name did not match, vote not counted.')
@@ -36,7 +36,7 @@ def cast_vote(pname, pvote, cvote, mvote):
 
   # validate that player is the medic if they submitted a medic vote
   if mvote != NO_SUBMISSION:
-    res = query_db('SELECT pname FROM Roles WHERE prole = "MEDIC"', one=True)
+    res = query_db('SELECT pname FROM Players WHERE prole = "MEDIC"', one=True)
     mname = res['pname'] if res != None else ''
     if pname != mname:
       app.logger.info('medic vote & player name did not match, vote not counted.')
@@ -52,14 +52,14 @@ def drop_player(pname):
   remove a player from the Roles table
   :param pname: player name
   """
-  query_db('DELETE FROM Roles WHERE pname = ?', (pname,))
+  query_db('DELETE FROM Players WHERE pname = ?', (pname,))
 
 
 def get_num_players():
   """
   get the total number of players left in the Roles table
   """
-  return query_db('SELECT COUNT(pname) FROM Roles', one=True)[0]
+  return query_db('SELECT COUNT(pname) FROM Players', one=True)[0]
 
 
 def get_max_round():

@@ -1,23 +1,23 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-    <title>Roles</title>
+    <title>Players</title>
   </head>
   <body>
     <form action="/admin" method="POST">
       <p>Admin: <input type="submit" name="action" value="To Admin"/> </p>
     </form>
-    <h1>Roles:</h1>
+    <h1>Players:</h1>
     <table>
       <tr>
-        <th>RNAME</th>
-        <th>RTEAM</th>
+        <th>PNAME</th>
+        <th>PROLE</th>
       </tr>  
          
       {% for row in rows %}
       <tr>
-        <td> {{ row.rname }} </td>
-        <td> {{ row.rteam }} </td>
+        <td> {{ row.pname }} </td>
+        <td> {{ row.prole }} </td>
       </tr>
       {% endfor %}
     </table>

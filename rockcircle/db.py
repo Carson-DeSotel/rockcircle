@@ -6,6 +6,7 @@ Global space for relevant database filenames / paths
 """
 DATABASE = 'database.db'
 SCHEMA   = 'rockcircle/schema.sql'
+ROLES    = 'rockcircle/roles.sql'
 
 def init_db():
   """
@@ -17,6 +18,11 @@ def init_db():
   # create db from schema
   with open(SCHEMA) as f:
     con.executescript(f.read())
+
+  # init DB with role data
+  with open(ROLES) as f:
+    con.executescript(f.read())
+
   con.close()
 
 

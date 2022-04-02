@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS Roles;
-CREATE TABLE Roles (
+DROP TABLE IF EXISTS Players;
+CREATE TABLE Players (
   prole VARCHAR(25),
   pname VARCHAR(25),
   PRIMARY KEY (prole, pname)
@@ -13,4 +13,11 @@ CREATE TABLE Votes (
   cvote VARCHAR(25),
   mvote VARCHAR(25),
   PRIMARY KEY (round, pname)
+);
+
+DROP TABLE IF EXISTS Roles;
+CREATE TABLE Roles (
+  rname VARCHAR(25),
+  rteam VARCHAR(25),
+  PRIMARY KEY (rname)
 );

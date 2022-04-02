@@ -28,7 +28,7 @@ def index():
 
     elif request.form.get('action') == 'To Vote':
       # get all names and pass them into votes
-      rows = query_db('SELECT pname FROM Roles')
+      rows = query_db('SELECT pname FROM Players')
       return render_template('vote.html', rows = rows)
       
     elif request.form.get('action') == 'Cast Vote':
@@ -74,6 +74,10 @@ def admin():
     rows = query_db('SELECT * FROM Votes')
     # render vote data in db_votes.html
     return render_template('db_votes.html', rows = rows)
+
+  elif request.form.get('action') == 'To Players':
+    rows = query_db('SELECT * FROM Players')
+    return render_template('db_players.html', rows = rows)
 
   elif request.form.get('action') == 'To Admin':
     return render_template('admin.html', num_players = num_players,
