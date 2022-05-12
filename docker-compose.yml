@@ -1,0 +1,28 @@
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - data:/var/lib/postgresql/
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+
+  app:
+    build: .
+    command: python3 -m flask run
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - 42069:42069
+    env_file:
+      - .env.dev
+    depends_on:
+      - db
+    
+volumes:
+  data:
