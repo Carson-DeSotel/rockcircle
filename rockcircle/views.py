@@ -19,7 +19,6 @@ def index():
     # identify which submit was pressed based on HTML button value attr.
     if request.form.get('action') == 'To Player':
       rows = query_db('SELECT rname from Roles')
-      print('ROWS:', rows)
       return render_template('add_player.html', rows = rows)
       
     elif request.form.get('action') == 'Add Player':
