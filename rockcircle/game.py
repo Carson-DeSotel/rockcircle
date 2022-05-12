@@ -121,15 +121,8 @@ def get_results(round):
     return None 
 
   res = query_db('SELECT pvote, COUNT(*) FROM Votes GROUP BY pvote, cvote')
-  
+
   # unpack to dict to avoid indexing errors
   res = [dict(r) for r in res]
 
-  # rename fields
-  final = []
-  for d in res:
-    renamed_dict = {}
-    renamed_dict['name'] = d['pvote']
-    renamed_dict['count'] = d['COUNT(*)']
-    final.append(renamed_dict)
-  return final
+  return res
