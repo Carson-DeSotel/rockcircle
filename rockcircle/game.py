@@ -9,7 +9,7 @@ def add_player(pname, prole):
   :param pname: player name
   :param prole: player role
   """
-  query_db('INSERT INTO Players (prole, pname) VALUES (?, ?)', (prole, pname))
+  query_db('INSERT INTO Players (prole, pname) VALUES (%s, %s)', (prole, pname))
 
 
 def cast_vote(pname, pvote, cvote, mvote):
@@ -43,7 +43,7 @@ def cast_vote(pname, pvote, cvote, mvote):
       return
   
   # insert vote into Votes table
-  query_db('INSERT INTO Votes VALUES (?, ?, ?, ?, ?)', 
+  query_db('INSERT INTO Votes VALUES (%s, %s, %s, %s, %s)',
                                      (ROUND, pname, pvote, cvote, mvote))  
 
 
@@ -52,7 +52,7 @@ def drop_player(pname):
   remove a player from the Roles table
   :param pname: player name
   """
-  query_db('DELETE FROM Players WHERE pname = ?', (pname,))
+  query_db('DELETE FROM Players WHERE pname = (%s)', (pname,))
 
 
 def get_num_players():
@@ -107,7 +107,7 @@ def get_vote(pname, round):
   if round > cur_round:
     return None 
   
-  res = query_db('SELECT pvote FROM Votes WHERE pname = ? AND round = ?', (pname, round), one=True)
+  res = query_db('SELECT pvote FROM Votes WHERE pname = (%s) AND round = (%s)', (pname, round), one=True)
   res = res[0] if res != None else None
   return res
 

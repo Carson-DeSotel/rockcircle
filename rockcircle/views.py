@@ -1,7 +1,7 @@
 from flask import g, render_template, request, redirect, url_for
 
 from rockcircle import app
-from rockcircle.db import get_db, query_db
+from rockcircle.db import query_db
 from rockcircle.game import (add_player, cast_vote, 
                              get_num_players, NO_SUBMISSION,
                              get_current_round,
@@ -19,6 +19,7 @@ def index():
     # identify which submit was pressed based on HTML button value attr.
     if request.form.get('action') == 'To Player':
       rows = query_db('SELECT rname from Roles')
+      print('ROWS:', rows)
       return render_template('add_player.html', rows = rows)
       
     elif request.form.get('action') == 'Add Player':
@@ -92,11 +93,3 @@ def admin():
     return render_template('admin.html', num_players = num_players,
                                          cur_round   = cur_round,
                                          sub_players = sub_players,)
-@app.teardown_appcontext
-def close_connection(exception):
-  """
-  close down the database as the app is being closed
-  """
-  db = getattr(g, '_database', None)
-  if db is not None:
-      db.close()
