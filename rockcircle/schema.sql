@@ -19,5 +19,6 @@ DROP TABLE IF EXISTS Roles;
 CREATE TABLE Roles (
   rname VARCHAR(25),
   rteam VARCHAR(25),
+  rdesc VARCHAR(128),
   PRIMARY KEY (rname)
 );
