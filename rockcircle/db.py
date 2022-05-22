@@ -22,15 +22,19 @@ SCRIPTS  = [SCHEMA, ROLES]
 
 
 def db_connect():
+  """
+  establish a connection into the PostgreSQL database using psycopg2
+  :return: return a connection to the database
+  """
   # establish database connection
   conn = psycopg2.connect(
-    dbname='postgres',
-    user='postgres',
-    password='postgres',
+    dbname   = 'postgres',
+    user     = 'postgres',
+    password = 'postgres',
     # connect to db host due to being in a different Docker image
-    host='db',
+    host     = 'db',
     # switch to DictCursor to allow access by field
-    cursor_factory=psycopg2.extras.DictCursor,
+    cursor_factory = psycopg2.extras.DictCursor,
   )
   return conn
 
@@ -79,7 +83,7 @@ def query_db(query, args=(), one=False):
   # establish connection
   conn = db_connect()
 
-  # execute query, store rows in rv
+  # execute query
   cur = conn.cursor()
   cur.execute(query, args)
 
@@ -89,14 +93,9 @@ def query_db(query, args=(), one=False):
   # get results back from SELECT queries
   if cur.description is not None:
     res = cur.fetchall()
-    
-    # close connection
-    db_close(conn)
-
     # if the one tag is set, return only the first row
     return (res[0] if res else None) if one else res
 
   # just close if there's no data to get  
-  else:
-    db_close(conn)
-    return None
+  db_close(conn)
+  return None
