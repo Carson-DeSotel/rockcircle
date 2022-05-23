@@ -1,41 +1,76 @@
-import sqlite3
-from flask import g
+""" Database Functions
+
+This file contains relevant functions for 
+* establishing connections to the database
+* closing connections
+* querying the database
+* initializing the database according to specified SQL files
+
+This file also contains definitions for pre-defined SQL files
+noted in the global space.
+"""
+
+import psycopg2
+import psycopg2.extras
 
 """
 Global space for relevant database filenames / paths
 """
-DATABASE = 'database.db'
 SCHEMA   = 'rockcircle/schema.sql'
 ROLES    = 'rockcircle/roles.sql'
+SCRIPTS  = [SCHEMA, ROLES]
+
+
+def db_connect():
+  """
+  establish a connection into the PostgreSQL database using psycopg2
+  :return: return a connection to the database
+  """
+  # establish database connection
+  conn = psycopg2.connect(
+    dbname   = 'postgres',
+    user     = 'postgres',
+    password = 'postgres',
+    # connect to db host due to being in a different Docker image
+    host     = 'db',
+    # switch to DictCursor to allow access by field
+    cursor_factory = psycopg2.extras.DictCursor,
+  )
+  return conn
+
+
+def db_close(conn):
+  """
+  close the database connection and cursor
+  :param conn: connection to the database to close
+  """
+  # get cursor so that we can close it
+  cur = conn.cursor()
+
+  # close cursor & connection
+  cur.close()
+  conn.close()
+
 
 def init_db():
   """
-  initialize the database by inputting the schema
+  initialize the database by inputting the specified schema
   """
-  # establish database connection
-  con = sqlite3.connect(DATABASE)
+  conn = db_connect()
 
-  # create db from schema
-  with open(SCHEMA) as f:
-    con.executescript(f.read())
+  # obtain cursor from connection
+  cur = conn.cursor()
 
-  # init DB with role data
-  with open(ROLES) as f:
-    con.executescript(f.read())
+  # load in each SQL script
+  for script in SCRIPTS:
+    with open(script) as f:
+      cur.execute(f.read())
 
-  con.close()
+  # commit changes
+  conn.commit()
 
+  db_close(conn)
 
-def get_db():
-  """
-  get a connection into the database
-  :returns: a connection to the database
-  """
-
-  db = getattr(g, '_database', None)
-  if db is None:
-      db = g._database = sqlite3.connect(DATABASE)
-  return db
 
 def query_db(query, args=(), one=False):
   """
@@ -46,20 +81,21 @@ def query_db(query, args=(), one=False):
   :returns: a list of indexable rows
   """
   # establish connection
-  con = get_db()
+  conn = db_connect()
 
-  # set row factory to return row type instead of tuples
-  # this allows us to query by key instead of index
-  con.row_factory = sqlite3.Row 
-
-  # execute query, store rows in rv
-  cur = con.cursor()
+  # execute query
+  cur = conn.cursor()
   cur.execute(query, args)
+
   # commit executed query to db in case of INSERT
-  con.commit()
-  rv = cur.fetchall()
+  conn.commit()
 
-  cur.close()
+  # get results back from SELECT queries
+  if cur.description is not None:
+    res = cur.fetchall()
+    # if the one tag is set, return only the first row
+    return (res[0] if res else None) if one else res
 
-  # if the one tag is set, return only the first row
-  return (rv[0] if rv else None) if one else rv
+  # just close if there's no data to get  
+  db_close(conn)
+  return None

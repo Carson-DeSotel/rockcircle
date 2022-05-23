@@ -6,11 +6,11 @@ from logging.config import fileConfig
 app = Flask(__name__)
 
 # establish config from config file
-from config import Config
+from rockcircle.config import Config
 app.config.from_object(Config)
 
 # establish logging config
-fileConfig('logging_config.ini')
+fileConfig('rockcircle/logging_config.ini')
 logger = logging.getLogger()
 
 # import after creating app

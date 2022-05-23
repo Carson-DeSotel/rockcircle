@@ -1,4 +1,5 @@
+from flask import Flask
 from rockcircle import app
 
 if __name__ == '__main__':
-  flask.run(app)
+  Flask.run(app)
