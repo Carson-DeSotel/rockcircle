@@ -16,7 +16,8 @@ CREATE TABLE Roles (
  * Manage any players that are playing the game.
  * pname: the player's name
  * prole: the role that the player has been assigned
- * 
+ * align: the player's alignment; either {PASSENGERS, STOWAWAYS} 
+ *  - this field is needed for the GHOST & TURNCOAT
  * This schema should avoid naming conflicts should there be 
  * multiple people with the same name, as the roles are unique and the 
  * combination of the name and role should be exclusive.
@@ -25,8 +26,23 @@ DROP TABLE IF EXISTS Players;
 CREATE TABLE Players (
   pname VARCHAR(25),
   prole VARCHAR(25),
+  align VARCHAR(25),
   PRIMARY KEY (pname, prole),
   FOREIGN KEY (prole) REFERENCES Roles(rname)
+);
+
+/**
+ * Store the rooms in play and their rank.
+ * rname: the name of the room
+ *   - defaults to numerics, can be changed by the user
+ * rrank: the rank of the room; determines the order in which they're
+ *        removed from play
+ */
+DROP TABLE IF EXISTS Rooms;
+CREATE TABLE Rooms (
+  rname VARCHAR(25),
+  rrank INTEGER,
+  PRIMARY KEY (roomname)
 );
 
 /**
