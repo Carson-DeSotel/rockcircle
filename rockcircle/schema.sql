@@ -42,7 +42,7 @@ DROP TABLE IF EXISTS Rooms;
 CREATE TABLE Rooms (
   rname VARCHAR(25),
   rrank INTEGER,
-  PRIMARY KEY (roomname)
+  PRIMARY KEY (rname)
 );
 
 /**
